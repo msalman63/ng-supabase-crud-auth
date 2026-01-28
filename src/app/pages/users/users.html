@@ -1,0 +1,105 @@
+<div class="landing-page-wrapper min-h-screen bg-linear-to-r from-blue-300 to-blue-400 flex flex-col justify-center items-center gap-4">
+
+
+  <!-- FORM CARD -->
+  <div class="form-container w-full max-w-md lg:max-w-3xl mx-auto my-4 bg-blue-100 shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300 p-4 sm:p-6 md:p-10 rounded-lg">
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+      <!-- FORM TITLE -->
+  <h2 class="font-bebas font-bold text-lg md:text-xl lg:text-2xl text-center text-cyan-900 text-shadow-3xs text-shadow-cyan-950 tracking-wider">
+    User Data Form
+  </h2>
+
+      <div class="form-data flex flex-col">
+
+        <div class="flex flex-col justify-between items-center gap-x-4">
+
+          <!-- NAME -->
+          <div class="name w-full flex flex-col py-2 gap-1">
+            <label for="name" class="font-poppins font-semibold text-sm md:text-base">Name</label>
+            <input
+              id="name"
+              formControlName="name"
+              placeholder="Enter name"
+              class="text-sm md:text-base placeholder:text-gray-400 text-gray-800 border border-gray-300 rounded p-2 focus:outline-1 focus:outline-primary"
+            />
+            <small class="text-red-600 text-xs" *ngIf="userForm.get('name')?.touched && userForm.get('name')?.errors">
+              Name is required
+            </small>
+          </div>
+
+          <!-- EMAIL -->
+          <div class="email w-full flex flex-col py-2 gap-1">
+            <label for="email" class="font-poppins font-semibold text-sm md:text-base">Email</label>
+            <input
+              id="email"
+              formControlName="email"
+              placeholder="Enter email"
+              class="text-sm md:text-base placeholder:text-gray-400 text-gray-800 border border-gray-300 rounded p-2 focus:outline-1 focus:outline-primary"
+            />
+            <small class="text-red-600 text-xs" *ngIf="userForm.get('email')?.touched && userForm.get('email')?.errors">
+              Valid email is required
+            </small>
+          </div>
+
+          <!-- AGE -->
+          <div class="age w-full flex flex-col py-2 gap-1">
+            <label for="age" class="font-poppins font-semibold text-sm md:text-base">Age</label>
+            <input
+              id="age"
+              formControlName="age"
+              placeholder="Enter age"
+              class="text-sm md:text-base placeholder:text-gray-400 text-gray-800 border border-gray-300 rounded p-2 focus:outline-1 focus:outline-primary"
+            />
+            <small class="text-red-600 text-xs" *ngIf="userForm.get('age')?.touched && userForm.get('age')?.errors">
+              Age is required
+            </small>
+          </div>
+
+        </div>
+
+        <!-- SUBMIT BUTTON -->
+        <div class="btn mx-auto mt-4">
+          <button type="submit" [disabled]="userForm.invalid" class="disabled:bg-blue-200 bg-primary hover:bg-blue-600 px-6 py-2 text-white rounded-lg">
+            {{ isEditMode ? 'Update' : 'Save' }}
+          </button>
+        </div>
+
+      </div>
+    </form>
+  </div>
+
+    <!--Manage Project Link-->
+     <div class="link flex flex-row justify-center items-center gap-1">
+        <span class="font-inter font-normal text-xs md:text-sm text-center text-gray-600">Manage your projects?</span>
+        <a routerLink="/projects" class="text-xs md:text-sm font-semibold font-poppins tracking-normal text-cyan-900 underline text-cente cursor-pointer">Projects</a>
+    </div>
+
+  <!-- USERS LIST -->
+  <h2 class="font-bebas font-bold text-xl md:text-2xl lg:text-4xl text-center text-cyan-900 text-shadow-3xs text-shadow-cyan-950 tracking-wider">
+    Available Users
+  </h2>
+
+  <div class="users grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <div *ngFor="let user of users; trackBy: trackById" class="cover bg-blue-100 flex flex-col justify-between items-center gap-2 m-4 p-4 border border-gray-200 shadow-md hover:drop-shadow-lg rounded-xl hover:-translate-y-1 transition-all duration-300">
+      
+      <h2 class="font-semibold text-lg text-primary">{{ user.name }}</h2>
+      <h3 class="text-sm text-gray-500">{{ user.email }}</h3>
+      <h3 class="text-sm text-gray-500">{{ user.age }}</h3>
+
+      <!-- ACTION BUTTONS -->
+      <div class="flex gap-3 mt-2">
+        <button type="button" (click)="startEdit(user)" class="bg-blue-500 hover:bg-blue-600 px-3 py-1 text-white rounded-md">Edit</button>
+        <button type="button" (click)="deleteUser(user.id!)" class="bg-red-600 hover:bg-red-700 px-3 py-1 text-white rounded-md">Delete</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SIGN OUT BUTTON -->
+  <div class="btn mx-auto my-3 sm:my-4 md:my-5 lg:my-6 w-full sm:w-auto">
+    <button type="button" (click)="signOut()" class="bg-red-600 px-4 sm:px-5 md:px-6 lg:px-8 py-1.5 sm:py-2 md:py-2.5 lg:py-3 text-xs sm:text-sm md:text-base text-white rounded-lg cursor-pointer w-full sm:w-auto transition-colors duration-200 hover:bg-red-700">
+      {{ isloading ? 'Loading...' : 'Sign Out' }}
+    </button>
+  </div>
+
+</div>

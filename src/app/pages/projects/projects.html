@@ -1,0 +1,118 @@
+<div class="ProjectData min-h-screen bg-linear-to-r from-blue-300 to-blue-400 flex flex-col justify-center items-center gap-4 ">
+
+  <!-- FORM CARD -->
+  <div
+    class="form-container w-full max-w-md lg:max-w-3xl mx-auto my-4 bg-gray-50 shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300 p-4 sm:p-6 md:p-10 rounded-lg"
+  >
+    <form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
+      <!-- FORM TITLE -->
+  <h2 class="font-bebas font-bold text-lg md:text-xl lg:text-3xl text-center text-cyan-900 text-shadow-2xs text-shadow-cyan-950 tracking-wider">
+    Project Data Form
+  </h2>
+      <div class="form-data flex flex-col">
+        <div class="flex flex-col justify-between items-center gap-x-4">
+          <!-- NAME -->
+          <div class="name w-full flex flex-col py-2 gap-1">
+            <label for="name" class="font-poppins font-semibold text-sm md:text-base"> Name </label>
+            <input
+              id="name"
+              formControlName="name"
+              placeholder="Enter name"
+              class="text-sm md:text-base placeholder:text-gray-400 text-gray-800 border border-gray-300 rounded p-2 focus:outline-1 focus:outline-primary"
+            />
+            <small
+              class="text-red-600 text-xs"
+              *ngIf="projectForm.get('name')?.touched && projectForm.get('name')?.errors"
+            >
+              Name is required
+            </small>
+          </div>
+
+          <!-- Project Details -->
+          <div class="description w-full flex flex-col py-2 gap-1">
+            <label for="description" class="font-poppins font-semibold text-sm md:text-base">
+              Description
+            </label>
+            <textarea
+              id="description"
+              formControlName="description"
+              placeholder="Enter description"
+              class="text-sm md:text-base placeholder:text-gray-400 text-gray-800 border border-gray-300 rounded p-2 focus:outline-1 focus:outline-primary"
+            >
+            </textarea>
+            <small
+              class="text-red-600 text-xs"
+              *ngIf="
+                projectForm.get('description')?.touched && projectForm.get('description')?.errors
+              "
+            >
+              Description is required & must be of 30+ characters...
+            </small>
+          </div>
+        </div>
+
+        <!-- SUBMIT BUTTON -->
+        <div class="btn mx-auto mt-4">
+          <button
+            type="submit"
+            [disabled]="projectForm.invalid"
+            class="disabled:bg-blue-200 bg-primary hover:bg-blue-600 px-6 py-2 text-white rounded-lg cursor-pointer"
+          >
+            {{ isEditMode ? 'Update' : 'Save' }}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Projects LIST -->
+  <h2 class="font-bebas font-bold text-xl md:text-2xl lg:text-4xl text-center text-cyan-900 text-shadow-3xs text-shadow-cyan-950 tracking-wider">
+    Available Projects
+  </h2>
+
+  <div class="users grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    @for (project of projects; track project.id) {
+      <div
+        class="cover  bg-blue-100 flex flex-col justify-between items-center gap-2 m-4 p-4 border border-gray-200 shadow-md hover:shadow-lg rounded-xl hover:-translate-y-1 transition-all duration-300"
+      >
+        <h2 class="font-semibold text-lg text-primary">
+          {{ project.name }}
+        </h2>
+
+        <h3 class="text-sm text-gray-500">
+          {{ project.description }}
+        </h3>
+
+        <h3 class="text-sm text-gray-500">
+          {{ project.user_id }}
+        </h3>
+
+        <!-- ACTION BUTTONS -->
+        <div class="flex gap-3 mt-2">
+          <button
+            *ngIf="project.id"
+            (click)="startEdit(project)"
+            class="bg-blue-500 hover:bg-blue-600 px-3 py-1 text-white rounded-md"
+          >
+            Edit
+          </button>
+
+          <button
+            *ngIf="project.id"
+            (click)="deleteProject(project.id)"
+            class="bg-red-600 hover:bg-red-700 px-3 py-1 text-white rounded-md"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- SIGN OUT BUTTON -->
+  <div class="btn mx-auto my-3 sm:my-4 md:my-5 lg:my-6 w-full sm:w-auto">
+    <button type="button" (click)="signOut()" class="bg-red-600 px-4 sm:px-5 md:px-6 lg:px-8 py-1.5 sm:py-2 md:py-2.5 lg:py-3 text-xs sm:text-sm md:text-base text-white rounded-lg cursor-pointer w-full sm:w-auto transition-colors duration-200 hover:bg-red-700">
+      {{ isloading ? 'Loading...' : 'Sign Out' }}
+    </button>
+  </div>
+</div>
